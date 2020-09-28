@@ -26,8 +26,14 @@
 		(not (pixels-equal img j (- j 1))))
 	    collect y)))
 
+(defun load-img (filename)
+    (cond
+      ((string-equal (ppcre:scan-to-strings "\[^\.]*$" filename)  "png")
+       (read-png-file filename))
+      (T (error "Invalid file extension"))))
+
 (defun decode-img (filename)
-  (let ((img (read-png-file filename)))
+  (let ((img (load-img filename)))
     (typecase img
       (8-bit-rgb-image
        (locally
